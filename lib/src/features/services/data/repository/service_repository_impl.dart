@@ -1,32 +1,15 @@
+import 'package:bloc_test/src/features/services/data/data_source/service_data_source.dart';
+import 'package:bloc_test/src/features/services/domain/repository/service_repository.dart';
 
-import 'package:bloc_test/src/features/services/data/repository/service_repository.dart';
+import '../models/service_data_model.dart';
 
-import '../../../../core/network/api.dart';
-import '../../../../core/network/network_utils.dart';
-import '../model/service_data_model.dart';
+class ServiceRepositoryImpl implements ServiceRepository {
 
-class ServiceRepositoryImplement implements ServiceRepository {
+  final ServiceDataSource dataSource;
+  ServiceRepositoryImpl({required this.dataSource});
+
   @override
-  Future<List<ServiceData>> fetchServiceList() async {
-    var param = <String, dynamic>{};
-    param['page'] = '1';
-    param['show'] = "10";
-    param['search'] = "";
-
-    dynamic responseBody = await Network.handleResponse(
-      await Network.getRequest(api: Api.serviceList, params: param),
-    );
-    List<ServiceData> serviceList = [];
-
-    if (responseBody != null) {
-      var data = responseBody['services']['data'];
-      if (data != null) {
-        for (Map<String, dynamic> i in data) {
-          serviceList.add(ServiceData.fromJson(i));
-        }
-      }
-    }
-
-    return serviceList;
+  Future<List<ServiceDataModel>> getServiceList() async {
+    return await dataSource.fetchServiceList();
   }
 }

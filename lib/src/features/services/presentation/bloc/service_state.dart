@@ -18,7 +18,7 @@ class ServiceLoading extends ServiceState {
 }
 
 class ServiceLoaded extends ServiceState {
-  final List<ServiceData> serviceList;
+  final List<ServiceDataModel> serviceList;
   const ServiceLoaded({required this.serviceList});
 
   @override

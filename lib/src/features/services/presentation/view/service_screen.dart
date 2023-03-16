@@ -3,7 +3,9 @@
 import 'package:bloc_test/routes/routes.dart';
 import 'package:bloc_test/src/core/extensions/build_context_extension.dart';
 import 'package:bloc_test/src/core/helpers/helper_methods.dart';
+import 'package:bloc_test/src/core/utils/color.dart';
 import 'package:bloc_test/src/core/utils/dimensions.dart';
+import 'package:bloc_test/src/features/services/presentation/view/components/service_item.dart';
 import 'package:bloc_test/src/widgets/custom_loader.dart';
 import 'package:bloc_test/src/widgets/no_data_found.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kWhite,
       appBar: AppBar(
         title: const Text('Service Screen'),
         actions: [
@@ -57,23 +60,24 @@ class _ServicesScreenState extends State<ServicesScreen> {
           if (state is ServiceInitial || state is ServiceLoading) {
             return const CustomLoader();
           } else if (state is ServiceLoaded) {
-            return ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: state.serviceList.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(8)),
-                  child: Text(state.serviceList[index].title.toString()),
-                );
-              },
-            );
+            return _buildServiceList(state);
           } else {
             return const NoDataFound();
           }
         },
       ),
+    );
+  }
+
+  Widget _buildServiceList(ServiceLoaded state) {
+    return ListView.separated(
+      padding: const EdgeInsets.all(16),
+      itemCount: state.serviceList.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ServiceItem(serviceData: state.serviceList[index]);
+      },
+      separatorBuilder: (context, index) =>
+          addVerticalSpace(Dimensions.paddingSizeSmall),
     );
   }
 }

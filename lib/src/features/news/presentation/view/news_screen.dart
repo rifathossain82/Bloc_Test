@@ -1,9 +1,10 @@
 import 'package:bloc_test/src/core/extensions/build_context_extension.dart';
-import 'package:bloc_test/src/features/news/bloc/news_bloc.dart';
 import 'package:bloc_test/src/widgets/custom_loader.dart';
 import 'package:bloc_test/src/widgets/no_data_found.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../bloc/news_bloc.dart';
 
 
 class NewsScreen extends StatefulWidget {

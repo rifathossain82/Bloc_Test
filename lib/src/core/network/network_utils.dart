@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:bloc_test/src/core/errors/messages.dart';
 import 'package:http/http.dart' as http;
 
 import '../helpers/helper_methods.dart';
 
 class Network {
-  static var noInternetMessage = "Please check your connection!";
 
   static getRequest({required String api, params}) async {
     if (!await hasInternet) {
-      throw noInternetMessage;
+      throw Message.noInternet;
     }
 
     kPrint("\nYou hit: $api");
@@ -30,7 +30,7 @@ class Network {
 
   static postRequest({required String api, body}) async {
     if (!await hasInternet) {
-      throw noInternetMessage;
+      throw Message.noInternet;
     }
 
     kPrint('\nYou hit: $api');
@@ -56,7 +56,7 @@ class Network {
     required String filePath,
   }) async {
     if (!await hasInternet) {
-      throw noInternetMessage;
+      throw Message.noInternet;
     }
 
     kPrint("\nYou hit: $api");
@@ -88,7 +88,7 @@ class Network {
   static handleResponse(http.Response response) async {
     try {
       if (!await hasInternet) {
-        throw noInternetMessage;
+        throw Message.noInternet;
       }
 
       if (response.statusCode >= 200 && response.statusCode <= 210) {
@@ -133,7 +133,7 @@ class Network {
         throw msg;
       }
     } on SocketException catch (_) {
-      throw noInternetMessage;
+      throw Message.noInternet;
     } on FormatException catch (_) {
       throw "Bad response format";
     } catch (e) {

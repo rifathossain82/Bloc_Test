@@ -1,6 +1,6 @@
-import 'package:bloc_test/src/features/news/view/news_screen.dart';
-import 'package:bloc_test/src/features/services/view/service_screen.dart';
-import 'package:bloc_test/src/features/settings/view/settings_screen.dart';
+import 'package:bloc_test/src/features/news/presentation/view/news_screen.dart';
+import 'package:bloc_test/src/features/services/presentation/view/service_screen.dart';
+import 'package:bloc_test/src/features/settings/presentation/view/settings_screen.dart';
 import 'package:flutter/material.dart';
 
 class RouteGenerator {

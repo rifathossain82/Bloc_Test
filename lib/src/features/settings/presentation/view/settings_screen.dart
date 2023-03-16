@@ -1,5 +1,5 @@
 import 'package:bloc_test/src/core/helpers/helper_methods.dart';
-import 'package:bloc_test/src/features/settings/cubit/settings_cubit.dart';
+import 'package:bloc_test/src/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

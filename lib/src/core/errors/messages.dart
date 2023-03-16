@@ -1,4 +1,6 @@
-class ErrorMessage {
+class Message {
+
+  /// validation message
   static const String emptyName = "Name is empty!";
   static const String emptyEmail = "Email Address is empty!";
   static const String invalidEmail = "Invalid Email Address!";
@@ -12,4 +14,8 @@ class ErrorMessage {
   static const String emptyOTP = "Please enter OTP!";
   static const String invalidOTP = "OTP must be 6 characters!";
   static const String emptyMessage = "Message is empty!";
+
+
+  /// error message
+  static const String noInternet = "Please check your connection!";
 }

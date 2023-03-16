@@ -1,12 +1,12 @@
-class ServiceData {
+class ServiceDataModel {
   int? id;
   String? title;
   String? description;
   int? price;
 
-  ServiceData({this.id, this.title, this.description, this.price});
+  ServiceDataModel({this.id, this.title, this.description, this.price});
 
-  ServiceData.fromJson(Map<String, dynamic> json) {
+  ServiceDataModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'] ?? '';
     description = json['description'] ?? '';
