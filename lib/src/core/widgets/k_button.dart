@@ -1,8 +1,8 @@
 import 'package:bloc_test/src/core/extensions/build_context_extension.dart';
+import 'package:bloc_test/src/core/utils/color.dart';
+import 'package:bloc_test/src/core/utils/dimensions.dart';
 import 'package:flutter/material.dart';
 
-import '../core/utils/color.dart';
-import '../core/utils/dimensions.dart';
 
 class KButton extends StatelessWidget {
   const KButton({

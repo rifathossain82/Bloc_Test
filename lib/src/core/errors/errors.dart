@@ -1,32 +1,58 @@
-abstract class Error{
+abstract class BaseError {
   final String message;
-  Error({required this.message});
+  final int? statusCode;
+
+  BaseError({
+    required this.message,
+    this.statusCode,
+  });
 }
 
-class NetworkError extends Error{
-  NetworkError({required super.message});
+class NetworkError extends BaseError {
+  NetworkError({
+    required super.message,
+    super.statusCode,
+  });
 }
 
-class BadRequestError extends Error{
-  BadRequestError({required super.message});
+class BadRequestError extends BaseError {
+  BadRequestError({
+    required super.message,
+    super.statusCode,
+  });
 }
 
-class UnauthorizedError extends Error{
-  UnauthorizedError({required super.message});
+class UnauthorizedError extends BaseError {
+  UnauthorizedError({
+    required super.message,
+    super.statusCode,
+  });
 }
 
-class PageNotFoundError extends Error{
-  PageNotFoundError({required super.message});
+class PageNotFoundError extends BaseError {
+  PageNotFoundError({
+    required super.message,
+    super.statusCode,
+  });
 }
 
-class ServerError extends Error{
-  ServerError({required super.message});
+class ServerError extends BaseError {
+  ServerError({
+    required super.message,
+    super.statusCode,
+  });
 }
 
-class ForbiddenError extends Error{
-  ForbiddenError({required super.message});
+class ForbiddenError extends BaseError {
+  ForbiddenError({
+    required super.message,
+    super.statusCode,
+  });
 }
 
-class UnknownError extends Error{
-  UnknownError({required super.message});
+class UnknownError extends BaseError {
+  UnknownError({
+    required super.message,
+    super.statusCode,
+  });
 }

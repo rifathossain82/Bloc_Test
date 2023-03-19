@@ -1,14 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:bloc_test/src/core/errors/errors.dart';
 import 'package:bloc_test/src/core/errors/messages.dart';
+import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 
 import '../helpers/helper_methods.dart';
 
 class Network {
 
-  static getRequest({required String api, params}) async {
+  static Future<http.Response> getRequest({required String api, params}) async {
     if (!await hasInternet) {
       throw Message.noInternet;
     }
@@ -28,7 +30,7 @@ class Network {
     return response;
   }
 
-  static postRequest({required String api, body}) async {
+  static Future<http.Response> postRequest({required String api, body}) async {
     if (!await hasInternet) {
       throw Message.noInternet;
     }
@@ -138,6 +140,62 @@ class Network {
       throw "Bad response format";
     } catch (e) {
       throw e.toString();
+    }
+  }
+
+  static handleResponse2(http.Response response) async {
+    try {
+      if (!await hasInternet) {
+        throw NetworkError(message: Message.noInternet);
+      }
+
+      if (response.statusCode >= 200 && response.statusCode <= 210) {
+        kPrint('SuccessCode: ${response.statusCode}');
+        kPrint('SuccessResponse: ${response.body}');
+
+        if (response.body.isNotEmpty) {
+          return json.decode(response.body);
+        } else {
+          return response.body;
+        }
+      } else if (response.statusCode == 401) {
+        _logout();
+        String msg = "Unauthorized";
+        if (response.body.isNotEmpty) {
+          if(json.decode(response.body)['errors'] != null){
+            msg = json.decode(response.body)['errors'];
+          }
+        }
+        throw UnknownError(message: msg);
+      } else if (response.statusCode == 404) {
+        throw PageNotFoundError(message: 'Page Not Found!');
+      } else if (response.statusCode == 500) {
+        throw ServerError(message: 'Server Error!');
+      } else {
+        kPrint('ErrorCode: ${response.statusCode}');
+        kPrint('ErrorResponse: ${response.body}');
+
+        String msg = "Something went wrong";
+        if (response.body.isNotEmpty) {
+          var data = jsonDecode(response.body)['errors'];
+          if(data == null){
+            msg = jsonDecode(response.body)['message'] ?? msg;
+          }
+          else if (data is String) {
+            msg = data;
+          } else if (data is Map) {
+            msg = data['email'][0];
+          }
+        }
+
+        throw UnknownError(message: msg);
+      }
+    } on SocketException catch (_) {
+      throw NetworkError(message: Message.noInternet);
+    } on FormatException catch (_) {
+      throw BadRequestError(message: 'Bad Response!');
+    } catch (e) {
+      rethrow;
     }
   }
 

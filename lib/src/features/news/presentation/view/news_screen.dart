@@ -1,10 +1,12 @@
+import 'package:bloc_test/src/core/base/base_state.dart';
 import 'package:bloc_test/src/core/extensions/build_context_extension.dart';
-import 'package:bloc_test/src/widgets/custom_loader.dart';
-import 'package:bloc_test/src/widgets/no_data_found.dart';
+import 'package:bloc_test/src/core/widgets/custom_loader.dart';
+import 'package:bloc_test/src/core/widgets/error_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/news_bloc.dart';
+import 'package:bloc_test/src/core/widgets/no_data_found.dart';
+import 'package:bloc_test/src/features/news/presentation/bloc/news_bloc.dart';
 
 
 class NewsScreen extends StatefulWidget {
@@ -30,13 +32,15 @@ class _ServicesScreenState extends State<NewsScreen> {
       body: BlocConsumer<NewsBloc, NewsState>(
         listener: (context, state) {
           if (state is NewsError) {
-            context.showSnackBar(state.message);
+            context.showSnackBar(state.error.message);
           }
         },
         builder: (context, state) {
-          if (state is NewsInitial || state is NewsLoading) {
-            return const CustomLoader();
+          if (state is NewsError) {
+            return ErrorScreen(error: state.error);
           } else if (state is NewsLoaded) {
+            if(state.newsData.news!.isEmpty) return const NoDataFound();
+
             return ListView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: state.newsData.news!.length,
@@ -50,7 +54,7 @@ class _ServicesScreenState extends State<NewsScreen> {
               },
             );
           } else {
-            return const NoDataFound();
+            return const CustomLoader();
           }
         },
       ),

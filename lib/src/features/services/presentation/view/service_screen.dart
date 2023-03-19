@@ -1,13 +1,15 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'package:bloc_test/routes/routes.dart';
+import 'package:bloc_test/src/core/base/base_state.dart';
 import 'package:bloc_test/src/core/extensions/build_context_extension.dart';
 import 'package:bloc_test/src/core/helpers/helper_methods.dart';
+import 'package:bloc_test/src/core/routes/routes.dart';
 import 'package:bloc_test/src/core/utils/color.dart';
 import 'package:bloc_test/src/core/utils/dimensions.dart';
+import 'package:bloc_test/src/core/widgets/custom_loader.dart';
+import 'package:bloc_test/src/core/widgets/error_screen.dart';
+import 'package:bloc_test/src/core/widgets/no_data_found.dart';
 import 'package:bloc_test/src/features/services/presentation/view/components/service_item.dart';
-import 'package:bloc_test/src/widgets/custom_loader.dart';
-import 'package:bloc_test/src/widgets/no_data_found.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -53,16 +55,18 @@ class _ServicesScreenState extends State<ServicesScreen> {
       body: BlocConsumer<ServiceBloc, ServiceState>(
         listener: (context, state) {
           if (state is ServiceError) {
-            context.showSnackBar(state.message);
+            context.showSnackBar(state.error.message);
           }
         },
         builder: (context, state) {
-          if (state is ServiceInitial || state is ServiceLoading) {
-            return const CustomLoader();
+          if (state is ServiceError) {
+            return ErrorScreen(error: state.error);
           } else if (state is ServiceLoaded) {
+            if(state.serviceList.isEmpty) return const NoDataFound();
+
             return _buildServiceList(state);
           } else {
-            return const NoDataFound();
+            return const CustomLoader();
           }
         },
       ),

@@ -26,9 +26,9 @@ class ServiceLoaded extends ServiceState {
 }
 
 class ServiceError extends ServiceState {
-  final String message;
-  const ServiceError({required this.message});
+  final BaseError error;
+  const ServiceError({required this.error});
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [error];
 }

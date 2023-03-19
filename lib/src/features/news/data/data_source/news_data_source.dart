@@ -1,5 +1,5 @@
-import '../models/news_data_model.dart';
+import 'package:http/http.dart';
 
 abstract class NewsDataSource{
-  Future<NewsData> fetchNewsData();
+  Future<Response> fetchNewsData();
 }
